@@ -20,6 +20,7 @@ mongoose.connection.on('error', function(err) {
 );
 // Populate DB with sample data
 if(config.seedDB) { require('./config/seed'); }
+if(config.importVocab){ require('./config/vocab'); }
 
 // Setup server
 var app = express();

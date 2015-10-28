@@ -15,6 +15,16 @@
       <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="thing in awesomeThings">
         <li><a href="#" tooltip="{{thing.info}}">{{thing.name}}</a></li>
       </ul>
+<br>
+<br>
+      <h1 class="page-header">Vocabs:</h1>
+      <table ng-repeat="vocab in vocabs">
+        <tr>
+          <td style="min-width: 100px">{{vocab.text}}</td>
+          <td style="min-width: 100px">{{vocab.part_of_speech}}</td>
+          <td  style="min-width: 100px">{{vocab.translations[0].text}}</td>
+        </tr>
+      </table>
     </div>
   </div>
 </div>
