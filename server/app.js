@@ -21,6 +21,8 @@ mongoose.connection.on('error', function(err) {
 // Populate DB with sample data
 if(config.seedDB) { require('./config/seed'); }
 if(config.importVocab){ require('./config/vocab'); }
+if(config.importAnimeEpisode){ require('./config/anime_episodes'); }
+if(config.importSubs){ require('./config/sub_subsparsed_vocab'); }
 
 // Setup server
 var app = express();
@@ -34,4 +36,4 @@ server.listen(config.port, config.ip, function () {
 });
 
 // Expose app
-exports = module.exports = app;
+var exports = module.exports = app;

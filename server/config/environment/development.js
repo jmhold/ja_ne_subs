@@ -8,6 +8,8 @@ module.exports = {
     uri: 'mongodb://localhost/janesubs-dev'
   },
 
-  seedDB: true,
-  importVocab: false
+  seedDB: false,
+  importVocab: false,
+  importAnimeEpisode: false,
+  importSubs: false
 };
