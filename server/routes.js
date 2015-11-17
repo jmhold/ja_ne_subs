@@ -10,6 +10,7 @@ var path = require('path');
 module.exports = function(app) {
 
   // Insert routes below
+  app.use('/api/timecode_to_vocab', require('./api/timecodeToVocab'));
   app.use('/api/parsed_words', require('./api/parsed_word'));
   app.use('/api/anime_genres', require('./api/anime_genre'));
   app.use('/api/subtitles_parsed_types', require('./api/subtitles_parsed_type'));

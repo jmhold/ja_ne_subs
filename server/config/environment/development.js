@@ -11,5 +11,6 @@ module.exports = {
   seedDB: false,
   importVocab: false,
   importAnimeEpisode: false,
-  importSubs: false
+  importSubs: false,
+  importFingerprints: false
 };

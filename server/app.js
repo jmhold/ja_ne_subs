@@ -23,6 +23,7 @@ if(config.seedDB) { require('./config/seed'); }
 if(config.importVocab){ require('./config/vocab'); }
 if(config.importAnimeEpisode){ require('./config/anime_episodes'); }
 if(config.importSubs){ require('./config/sub_subsparsed_vocab'); }
+if(config.importFingerprints){ require('./config/video_to_fingerprints'); }
 
 // Setup server
 var app = express();

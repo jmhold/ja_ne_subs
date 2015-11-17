@@ -229,7 +229,15 @@ var MecabHelper = {
                     }
                 }
             }
-            if(returnObj.text) parsed_display_text.push(returnObj);
+            if(returnObj.text){
+                parsed_display_text.push(returnObj);
+            }
+        }
+        for(var k in parsed_display_text){
+            if(parsed_display_text[k] === undefined){
+                console.log(parsed_display_text[k])
+                parsed_display_text.splice(k, 1)
+            }
         }
         return parsed_display_text;
     },
@@ -241,12 +249,14 @@ var MecabHelper = {
     },
     getWordEntries: function(text){
 
+        finalParsedWords = [];
+
         var parsedText;
         if(text) parsedText = MecabHelper.parseText(text);
 
         var length = parsedText.length;
 
-        for(var i = 0; i<length; i++){
+        for(var i = 0; i<length-1; i++){
             var wordEntry = new ParsedWord({
                 active: true,
                 text: parsedText[i].text,

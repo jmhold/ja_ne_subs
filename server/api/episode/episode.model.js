@@ -13,7 +13,7 @@ var EpisodeSchema = new Schema({
     sub_parsed: [
         {
             type: ObjectId,
-            ref: 'SubtitlesParsed'
+            ref: 'ParsedSubtitle'
         }
     ]
 });

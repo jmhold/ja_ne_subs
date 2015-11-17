@@ -9,7 +9,7 @@ var SubtitleSchema = new Schema({
     file_location: String,
     parsed:{
         type: ObjectId,
-        ref: 'SubtitlesParsed'
+        ref: 'ParsedSubtitle'
     }
 });
 

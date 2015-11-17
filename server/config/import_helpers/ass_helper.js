@@ -1,5 +1,14 @@
 var AssHelper = {
 
+    toMiliseconds: function(time){
+        var mili = 0;
+        mili += parseInt(time[0]) * 3600000;
+        mili += parseInt(time[1]) * 60000;
+        mili += parseInt(time[2]) * 1000;
+
+        return mili;
+    },
+
     parseLine: function (data) {
 
         var timecodes,
@@ -29,6 +38,9 @@ var AssHelper = {
         returnObj.end_minutes = parseInt(end[1]);
         returnObj.end_seconds = parseInt(end[2]);
 
+        returnObj.start = AssHelper.toMiliseconds(start);
+        returnObj.end = AssHelper.toMiliseconds(end);
+
         text = data.substring(data.lastIndexOf(',') + 1);
 
         returnObj.display_text = text;
@@ -50,11 +62,7 @@ var AssHelper = {
             index = remaining.indexOf('\n');
         }
 
-        if (remaining.length > 0) {
-            AssHelper.parseLine(remaining);
-        }else{
-            return lineObject;
-        }
+        return lineObject;
 
     }
 };

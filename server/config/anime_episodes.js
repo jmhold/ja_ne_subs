@@ -13,12 +13,12 @@ var fs = require('fs'),
 var Anime = require('../api/anime/anime.model');
 var Episode = require('../api/episode/episode.model');
 
-var file = fs.readFileSync(__dirname + '/../api/anime/imports/first/one_piece.json', 'utf8');
+var file = fs.readFileSync(__dirname + '/../api/anime/imports/first/fairy_tail.json', 'utf8');
 var json = JSON.parse(file);
 
 var finalEpisodeList = [];
 
-//Episode.find({}).remove(function(){
+Episode.find({}).remove(function(){
     var jsonEpisodeList = json.anime.episodes.episode;
 
     for(var i in jsonEpisodeList){
@@ -45,7 +45,7 @@ var finalEpisodeList = [];
         });
     }
     addAnime();
-//});
+});
 
 
 

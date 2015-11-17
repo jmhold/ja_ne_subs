@@ -4,13 +4,15 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     ObjectId = Schema.Types.ObjectId;
 
-var SubtitlesParsedSchema = new Schema({
+var ParsedSubtitleSchema = new Schema({
     start_hours: Number,
     start_minutes: Number,
     start_seconds: Number,
     end_hours: Number,
     end_minutes: Number,
     end_seconds: Number,
+    start: Number,
+    end: Number,
     display_text: String,
     parsed_words:[
         {
@@ -20,4 +22,4 @@ var SubtitlesParsedSchema = new Schema({
     ]
 });
 
-module.exports = mongoose.model('SubtitlesParsed', SubtitlesParsedSchema);
+module.exports = mongoose.model('ParsedSubtitle', ParsedSubtitleSchema);
