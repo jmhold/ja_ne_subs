@@ -14,7 +14,7 @@ module.exports = function(app) {
   app.use('/api/parsed_words', require('./api/parsed_word'));
   app.use('/api/anime_genres', require('./api/anime_genre'));
   app.use('/api/subtitles_parsed_types', require('./api/subtitles_parsed_type'));
-  app.use('/api/subtitles_parseds', require('./api/subtitles_parsed'));
+  app.use('/api/subtitles_parsed', require('./api/subtitles_parsed'));
   app.use('/api/subtitles', require('./api/subtitle'));
   app.use('/api/episodes', require('./api/episode'));
   app.use('/api/animes', require('./api/anime'));

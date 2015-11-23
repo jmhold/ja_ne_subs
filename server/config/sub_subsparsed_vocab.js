@@ -59,8 +59,6 @@ var createSubtitleParsedEntry = function(){
 
     var thisTime = parsed[parsedIndex];
 
-    //console.log(wordList.length)
-
     var subtitleParsedEntry = new ParsedSubtitle({
         start_hours: thisTime.start_hours,
         start_minutes: thisTime.start_minutes,
@@ -96,17 +94,14 @@ var parseWordEntry = function(){
     if(thisTime != undefined) {
 
         if (thisTime.display_text != undefined && wordList.length == 0) {
-            //console.log(thisTime.display_text)
 
             wordList = MecabHelper.getWordEntries(thisTime.display_text);
-
-            //console.log(wordList.length)
 
         }
         if (wordList.length > wordIndex + 1) {
             //console.log('Index: ' + wordIndex)
             //console.log('Length: ' + wordList.length)
-            createWordEntry(wordList[wordIndex]);
+            assignVocabEntry(wordList[wordIndex]);
         } else {
             wordIndex = 0;
             createSubtitleParsedEntry();
@@ -115,23 +110,31 @@ var parseWordEntry = function(){
 
 };
 
+var assignVocabEntry = function(word){
+    Vocab.findOne({text: word.text}, function (err, item) {
+
+        if(item){
+            word.vobab_link = item;
+        }
+
+        createWordEntry(word);
+
+    });
+};
+
 var createWordEntry = function(word){
-    ParsedWord.findOne({text: word.text}, function (err, item) {
+    //ParsedWord.findOne({text: word.text}, function (err, item) {
         //console.log(item)
-        if (item) {
-            word = item;
-            wordIndex += 1;
-            parseWordEntry();
-        } else {
 
             word.save(function (err, item) {
                 if (err) console.log(err);
                 wordIndex += 1;
                 parseWordEntry();
             });
-        }
-    });
+
+    //});
 };
+
 
 var getFile = function(){
 

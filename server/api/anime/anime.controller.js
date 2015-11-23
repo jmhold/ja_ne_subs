@@ -13,11 +13,13 @@ exports.index = function(req, res) {
 
 // Get a single anime
 exports.show = function(req, res) {
-  Anime.findById(req.params.id, function (err, anime) {
-    if(err) { return handleError(res, err); }
-    if(!anime) { return res.status(404).send('Not Found'); }
-    return res.json(anime);
-  });
+  Anime.findById(req.params.id)
+      .populate('episodes')
+      .exec(function (err, anime) {
+        if(err) { return handleError(res, err); }
+        if(!anime) { return res.status(404).send('Not Found'); }
+        return res.json(anime);
+      });
 };
 
 // Creates a new anime in the DB.

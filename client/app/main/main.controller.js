@@ -20,7 +20,4 @@ angular.module('jaNeSubsApp')
       $http.delete('/api/things/' + thing._id);
     };
 
-      $http.get('/api/vocabs').success(function(vocabs) {
-        $scope.vocabs = vocabs;
-      });
   });

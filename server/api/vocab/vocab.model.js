@@ -28,7 +28,7 @@ var VocabSchema = new Schema({
     text: String,
     sound: String,
     translations: [TranslationsSchema],
-    transliterations: [TransliterationsSchema],
+    transliterations: [TransliterationsSchema]
 });
 
 module.exports = mongoose.model('Vocab', VocabSchema);

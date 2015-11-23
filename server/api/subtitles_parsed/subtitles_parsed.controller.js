@@ -13,11 +13,13 @@ exports.index = function(req, res) {
 
 // Get a single subtitles_parsed
 exports.show = function(req, res) {
-  ParsedSubtitle.findById(req.params.id, function (err, subtitles_parsed) {
-    if(err) { return handleError(res, err); }
-    if(!subtitles_parsed) { return res.status(404).send('Not Found'); }
-    return res.json(subtitles_parsed);
-  });
+  ParsedSubtitle.findById(req.params.id)
+      .populate('parsed_words')
+      .exec(function (err, subtitles_parsed) {
+        if(err) { return handleError(res, err); }
+        if(!subtitles_parsed) { return res.status(404).send('Not Found'); }
+        return res.json(subtitles_parsed);
+      });
 };
 
 // Creates a new subtitles_parsed in the DB.

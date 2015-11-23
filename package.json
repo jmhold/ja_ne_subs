@@ -25,6 +25,7 @@
     "connect-mongo": "^0.8.1"
   },
   "devDependencies": {
+    "async": "^1.5.0",
     "connect-livereload": "~0.4.0",
     "echoprint-codegen": "^0.1.5",
     "encoding-japanese": "^1.0.24",

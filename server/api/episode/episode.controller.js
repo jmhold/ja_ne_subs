@@ -13,11 +13,13 @@ exports.index = function(req, res) {
 
 // Get a single episode
 exports.show = function(req, res) {
-  Episode.findById(req.params.id, function (err, episode) {
-    if(err) { return handleError(res, err); }
-    if(!episode) { return res.status(404).send('Not Found'); }
-    return res.json(episode);
-  });
+  Episode.findById(req.params.id)
+      .populate('sub_parsed')
+      .exec(function (err, episode) {
+        if(err) { return handleError(res, err); }
+        if(!episode) { return res.status(404).send('Not Found'); }
+        return res.json(episode);
+      })
 };
 
 // Creates a new episode in the DB.

@@ -5,7 +5,15 @@ angular.module('jaNeSubsApp')
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
-    }];
+    },
+      {
+        'title': 'Animes',
+        'link': '/anime/list'
+      },
+      {
+        'title': 'Episodes',
+        'link': '/episode/list'
+      }];
 
     $scope.isCollapsed = true;
     $scope.isLoggedIn = Auth.isLoggedIn;
