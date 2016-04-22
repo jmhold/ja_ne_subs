@@ -5,7 +5,7 @@ var controller = require('./timecodeToVocab.controller');
 
 var router = express.Router();
 
-router.get('/', controller.show);
+router.get('/', controller.index);
 router.get('/:id', controller.show);
 
 module.exports = router;

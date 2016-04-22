@@ -10,7 +10,7 @@ module.exports = {
 
   seedDB: false,
   importVocab: false,
-  importAnimeEpisode: false,
+  importAnimeEpisode: true,
   importSubs: false,
   importFingerprints: false
 };

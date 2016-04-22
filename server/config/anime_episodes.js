@@ -8,45 +8,51 @@
 var fs = require('fs'),
     mongoose = require('mongoose'),
     Schema = mongoose.Schema,
-    ObjectId = Schema.ObjectId;
-
-var Anime = require('../api/anime/anime.model');
-var Episode = require('../api/episode/episode.model');
+    ObjectId = Schema.ObjectId,
+    Anime = require('../api/anime/anime.model'),
+    Episode = require('../api/episode/episode.model');
 
 var file = fs.readFileSync(__dirname + '/../api/anime/imports/first/fairy_tail.json', 'utf8');
 var json = JSON.parse(file);
-
 var finalEpisodeList = [];
 
-Episode.find({}).remove(function(){
-    var jsonEpisodeList = json.anime.episodes.episode;
+var AnimeToEpisodes = {
+  init: function(){
+    Episode.find({}).remove(function(){
+        addEpisode()
+    });
+  }
+}
 
-    for(var i in jsonEpisodeList){
 
-        var episodeNumber = jsonEpisodeList[i].epno['__text'];
-        var title;
-        for(var j in jsonEpisodeList[i].title){
-            if(jsonEpisodeList[i].title[j]['_xml:lang'] == 'en'){
-                title = jsonEpisodeList[i].title[j]['__text'];
-            }
-        }
-        var airDate = jsonEpisodeList[i].airdate;
+function addEpisode(){
+  var jsonEpisodeList = json.anime.episodes.episode;
 
-        var episode = new Episode({
-            active: true,
-            episode: episodeNumber,
-            title: title,
-            air_date: airDate
-        });
+  for(var i in jsonEpisodeList){
 
-        finalEpisodeList.push(episode);
-        episode.save(function (err) {
-            if (err) console.log(err)
-        });
-    }
-    addAnime();
-});
+      var episodeNumber = jsonEpisodeList[i].epno['__text'];
+      var title;
+      for(var j in jsonEpisodeList[i].title){
+          if(jsonEpisodeList[i].title[j]['_xml:lang'] === 'en'){
+              title = jsonEpisodeList[i].title[j]['__text'];
+          }
+      }
+      var airDate = jsonEpisodeList[i].airdate;
 
+      var episode = new Episode({
+          active: true,
+          episode: episodeNumber,
+          title: title,
+          air_date: airDate
+      });
+
+      finalEpisodeList.push(episode);
+      episode.save(function (err) {
+          if (err) console.log(err)
+      });
+  }
+  addAnime();
+}
 
 
 function addAnime(){
@@ -88,4 +94,3 @@ function addAnime(){
 //        console.log('%s has %s episodes.', anime.title, anime.episode_count)
 //    });
 //}
-

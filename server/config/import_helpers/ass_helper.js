@@ -47,7 +47,7 @@ var AssHelper = {
 
         return returnObj;
     },
-    parseSubFile: function (data) {
+    parseSubFile: function (data, callback) {
         var remaining = '';
         var lineObject = [];
 
@@ -62,7 +62,7 @@ var AssHelper = {
             index = remaining.indexOf('\n');
         }
 
-        return lineObject;
+        callback(lineObject);
 
     }
 };

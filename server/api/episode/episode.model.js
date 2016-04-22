@@ -1,6 +1,7 @@
 'use strict';
 
 var mongoose = require('mongoose'),
+    deepPopulate = require('mongoose-deep-populate')(mongoose),
     Schema = mongoose.Schema,
     ObjectId = Schema.Types.ObjectId;
 

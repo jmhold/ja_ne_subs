@@ -247,7 +247,7 @@ var MecabHelper = {
             return null;
         });
     },
-    getWordEntries: function(text){
+    getWordEntries: function(text, callback){
 
         finalParsedWords = [];
 
@@ -262,13 +262,15 @@ var MecabHelper = {
                 text: parsedText[i].text,
                 pos_main: parsedText[i].pos_main,
                 pos_sub: parsedText[i].pos_sub,
-                vocab_link: MecabHelper.findVocabRef(parsedText[i].text)
+                vocab_link: []
             });
+
+            wordEntry.save();
 
             finalParsedWords.push(wordEntry);
 
         }
-        return finalParsedWords;
+        callback(finalParsedWords);
     }
 };
 

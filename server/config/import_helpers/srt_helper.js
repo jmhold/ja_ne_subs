@@ -11,7 +11,7 @@ var SrtHelper = {
         return mili;
     },
 
-    parseSubFile: function(file){
+    parseSubFile: function(file, callback){
         var returnArray = [],
             parseObj = parser.fromSrt(file);
 
@@ -44,7 +44,7 @@ var SrtHelper = {
 
         }
 
-        return returnArray;
+        callback(returnArray);
     }
 };
 

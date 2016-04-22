@@ -9,11 +9,9 @@ var fs = require('fs'),
     Encoding = require('encoding-japanese'),
     AssHelper = require(__dirname +'/import_helpers/ass_helper'),
     SrtHelper = require(__dirname +'/import_helpers/srt_helper'),
-    MecabHelper = require(__dirname +'/import_helpers/mecab_helper'),
-    Vocab = require('../api/vocab/vocab.model'),
     Episode = require('../api/episode/episode.model'),
     ParsedSubtitle = require('../api/subtitles_parsed/subtitles_parsed.model'),
-    ParsedWord = require('../api/parsed_word/parsed_word.model');
+    ParsedToVocab = require(__dirname +'/subsparsed_to_vocab');
 
 var Mecab = require('mecab-lite'),
     mecab = new Mecab();
@@ -29,11 +27,17 @@ var filename = '';
 
 var wordList = [];
 
+var SubToSubParsed = {
+  init: function(){
+    ParsedSubtitle.find({}).remove(function(){
+        getFiles();
+    });
+  }
+}
 
-ParsedSubtitle.find({}).remove();
-ParsedWord.find({}).remove();
+SubToSubParsed.init();
 
-var linkEpisodeRecord = function(){
+function linkEpisodeRecord(){
 
     var epNumber = filename.match(/([0-9]{3})/g);
     epNumber = parseInt(epNumber);
@@ -46,7 +50,6 @@ var linkEpisodeRecord = function(){
             if (err){
                 console.log(err + '\n' + epNumber);
             }else{
-                //console.log('Saved Item ' + item)
                 fileIndex+=1;
                 getFile()
             }
@@ -55,7 +58,7 @@ var linkEpisodeRecord = function(){
 
 };
 
-var createSubtitleParsedEntry = function(){
+function createSubtitleParsedEntry(){
 
     var thisTime = parsed[parsedIndex];
 
@@ -68,8 +71,8 @@ var createSubtitleParsedEntry = function(){
         end_seconds: thisTime.end_seconds,
         start: thisTime.start,
         end: thisTime.end,
-        display_text: thisTime.display_text,
-        parsed_words: wordList
+        display_text: thisTime.display_text
+        //parsed_words: wordList
     });
 
     finalParsedSubs.push(subtitleParsedEntry);
@@ -77,9 +80,8 @@ var createSubtitleParsedEntry = function(){
     subtitleParsedEntry.save(function (err, item) {
         if (err) console.log(err);
         if(parsed.length > parsedIndex + 1){
-            wordList = [];
             parsedIndex += 1;
-            parseWordEntry();
+            createSubtitleParsedEntry();
         }else{
             linkEpisodeRecord(finalParsedSubs);
         }
@@ -88,55 +90,7 @@ var createSubtitleParsedEntry = function(){
 
 };
 
-var parseWordEntry = function(){
-
-    var thisTime = parsed[parsedIndex];
-    if(thisTime != undefined) {
-
-        if (thisTime.display_text != undefined && wordList.length == 0) {
-
-            wordList = MecabHelper.getWordEntries(thisTime.display_text);
-
-        }
-        if (wordList.length > wordIndex + 1) {
-            //console.log('Index: ' + wordIndex)
-            //console.log('Length: ' + wordList.length)
-            assignVocabEntry(wordList[wordIndex]);
-        } else {
-            wordIndex = 0;
-            createSubtitleParsedEntry();
-        }
-    }
-
-};
-
-var assignVocabEntry = function(word){
-    Vocab.findOne({text: word.text}, function (err, item) {
-
-        if(item){
-            word.vobab_link = item;
-        }
-
-        createWordEntry(word);
-
-    });
-};
-
-var createWordEntry = function(word){
-    //ParsedWord.findOne({text: word.text}, function (err, item) {
-        //console.log(item)
-
-            word.save(function (err, item) {
-                if (err) console.log(err);
-                wordIndex += 1;
-                parseWordEntry();
-            });
-
-    //});
-};
-
-
-var getFile = function(){
+function getFile(){
 
     parsedIndex = 0;
     finalParsedSubs = [];
@@ -148,39 +102,34 @@ var getFile = function(){
         fs.readFile(__dirname + '/..' + targetDir + filename, 'utf8', function(err, file){
             console.log('Filename: ' + filename);
             if(filename.indexOf('.ass') > -1){
-                console.log('ASS FILE');
-                parsed = AssHelper.parseSubFile(file);
+                //console.log('ASS FILE');
+                AssHelper.parseSubFile(file, function(entries){
+                  parsed = entries;
+                  createSubtitleParsedEntry();
+                });
             }else if(filename.indexOf('.srt') > -1){
-                console.log('SRT FILE');
-                parsed = SrtHelper.parseSubFile(file);
+                //console.log('SRT FILE');
+                SrtHelper.parseSubFile(file, function(entries){
+                  parsed = entries
+                  createSubtitleParsedEntry();
+                });
             }else{
                 parsed = null;
                 console.log('NOT A FORMAT I UNDERSTAND');
                 fileIndex+=1;
                 getFile()
             }
-
-            var interval = setInterval(function(){
-                if(parsed != undefined){
-                    clearInterval(interval);
-                    parseWordEntry();
-                }else{
-                    parsed = AssHelper.parseSubFile(file);
-                }
-            },1000);
         });
     }else{
-        console.log('Done with Subs and Word Entries')
+        console.log('Done with Subs Entries')
+        ParsedToVocab.init();
     }
 };
 
-var getFiles = function(){
-    console.log('getFiles');
+function getFiles(){
     fs.readdir(__dirname + '/..' + targetDir, function(err, files){
         if (err) throw err;
         allFiles = files;
         getFile()
     });
 };
-
-getFiles();

@@ -12,7 +12,7 @@ var ParsedWordSchema = new Schema({
     text: String,
     pos_main: String,
     pos_sub: String,
-    vobab_link: [Vocab.schema]
+    vocab_link: [Vocab.schema]
 });
 
 module.exports = mongoose.model('ParsedWord', ParsedWordSchema);
