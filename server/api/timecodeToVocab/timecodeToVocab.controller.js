@@ -7,7 +7,8 @@ var mongoose = require('mongoose'),
     Episode = require('../episode/episode.model'),
     ParsedSubtitle = require('../subtitles_parsed/subtitles_parsed.model'),
     ParsedWord = require('../parsed_word/parsed_word.model'),
-    Vocab = require('../vocab/vocab.model');
+    Vocab = require('../vocab/vocab.model'),
+    translate = require('yandex-translate')('trnsl.1.1.20160425T152150Z.834a1bfe630ad227.4baf52bc22d5ceb402683f030dcd540eaedc0304');
 
 var returnObj = {};
 
@@ -50,13 +51,27 @@ exports.index = function(req, res) {
 
 function returnVocab(res, words){
 
-  var returnArray = []
-  for(var i in words){
-    if(words[i].vocab_link && words[i].vocab_link.length > 0){
-      returnArray.push(words[i])
+  for(var i = 0; i<words.length; i++){
+    if(words[i].pos_main == 'particle'){
+      words.splice(i, 1)
     }
   }
-  return res.status(200).json(returnArray);
+
+  var word = words[Math.floor(Math.random() * words.length)]
+  console.log(word);
+  var resJson = {
+    show: "Sword Art Online",
+    episode: "Ep1",
+    text: word.text,
+    translation: ""
+  }
+
+  translate.translate(word.text, { to: 'en' }, function(err, response) {
+    resJson.translation = response.text[0]
+    return res.status(200).json(resJson);
+  });
+
+
 }
 
 // Get timecode in miliseconds to vocab for a specific episode

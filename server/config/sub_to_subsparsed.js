@@ -17,7 +17,7 @@ var Mecab = require('mecab-lite'),
     mecab = new Mecab();
 
 var parsed;
-var targetDir = '/api/anime/imports/first/fairy_tail/subs/';
+var targetDir = '/api/anime/imports/first/sword_art_online/subs/';
 var allFiles;
 var fileIndex = 0;
 var parsedIndex = 0;
@@ -39,7 +39,7 @@ SubToSubParsed.init();
 
 function linkEpisodeRecord(){
 
-    var epNumber = filename.match(/([0-9]{3})/g);
+    var epNumber = filename.match(/([0-9]{2})/g);
     epNumber = parseInt(epNumber);
     epNumber = epNumber.toString();
 

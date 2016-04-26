@@ -12,7 +12,7 @@ var fs = require('fs'),
     Anime = require('../api/anime/anime.model'),
     Episode = require('../api/episode/episode.model');
 
-var file = fs.readFileSync(__dirname + '/../api/anime/imports/first/fairy_tail.json', 'utf8');
+var file = fs.readFileSync(__dirname + '/../api/anime/imports/first/sword_art_online.json', 'utf8');
 var json = JSON.parse(file);
 var finalEpisodeList = [];
 

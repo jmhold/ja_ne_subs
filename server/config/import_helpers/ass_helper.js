@@ -23,6 +23,14 @@ var AssHelper = {
             return false;
         }
 
+        if (data.indexOf('Opening-Romaji') != -1) {
+            return false;
+        }
+
+        if (data.indexOf('}') != -1) {
+            return false;
+        }
+
         timecodes = data.match(/([0-9])+(:)+([0-9])\d+(:)+([0-9])\d/g);
 
         start = timecodes[0];
